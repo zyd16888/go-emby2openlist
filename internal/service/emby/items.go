@@ -246,6 +246,10 @@ func ProxyLatestItems(c *gin.Context) {
 	if checkErr(c, err) {
 		return
 	}
+	if resp.Header.Get("Content-Length") == "0" {
+		c.Redirect(http.StatusTemporaryRedirect, c.Request.RequestURI)
+		return
+	}
 
 	// 预响应请求
 	defer func() {

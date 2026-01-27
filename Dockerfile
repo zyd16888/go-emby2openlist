@@ -1,5 +1,5 @@
 # 第一阶段：构建阶段
-FROM golang:1.24-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -19,7 +19,7 @@ COPY internal internal
 COPY main.go main.go
 
 # 编译源码成静态链接的二进制文件
-RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-X main.ginMode=release" -o main .
+RUN CGO_ENABLED=0 go build -tags=goexperiment.jsonv2 -a -installsuffix cgo -ldflags="-X main.ginMode=release" -o main .
 
 # 第二阶段：运行阶段
 FROM alpine:latest
